@@ -1,0 +1,42 @@
+{% extends "starternew.html" %}
+
+{% block containercontent %}
+    <script> document.getElementById('viewspaces').className += " active";</script>
+    <!-- Custom styles for this template -->
+    <link href="static/exploreads.css" rel="stylesheet">
+    <!-- Begin page content -->
+    <!-- Marketing messaging and featurettes
+    ================================================== -->
+    <!-- Wrap the rest of the page in another container to center all the content. -->
+
+    <div class="container marketing">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul class='alert alert-danger'>
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+
+        <div style='text-align:center'><h1 style='color:white'>Sectors</h1></div>
+        <hr>
+        <div class='row'>
+            <div class="col-md-12">
+                <!-- Three columns of text below the carousel -->
+                {% for sectors_row in sectors | batch(2,'&nbsp;') %}
+                <div class="row">
+                    <div class='col-lg-1'> </div>
+                    {% for sector in sectors_row  %}
+                    <div class="col-lg-4" style='background:grey; background: rgba(250,250,250,0.7)'>
+                        <a href="{{url_for('viewspaces')}}/{{sector.id}}"><h2 style="text-align:center">{{sector.id}}</h2></a>
+                    </div><!-- /.col-lg-4 -->
+                    <div class='col-lg-2'> </div>
+                    {% endfor %}
+                </div><!-- /.row --><br>
+                {% endfor %}
+            </div>
+        </div>
+    </div><!-- /.container -->
+{% endblock %}

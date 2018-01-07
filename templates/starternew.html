@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>{{ title }} - iPark</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url_for('static',filename='dist/css/bootstrap.min.css')}}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static',filename='sticky-footer-navbar.css')}}" rel="stylesheet">
+    <link href="{{ url_for('static',filename='starter-buttons.css')}}" rel="stylesheet">
+  </head>
+  {% set background = url_for('static',filename='images/background.jpg')%}
+  {% set logo = url_for('static',filename='images/logo.jpg')%}
+  <body style='background-image: url("{{background}}");background-attachment: fixed;background-repeat: no-repeat; background-size: 100% auto;background-position: center'>
+
+    <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse" style="background-color: transparent">
+      <div class="container">
+    <!-- Fixed navbar -->
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a href="#" class="navbar-left"><img src="{{logo}}" style='width:100px;height:35px;opacity:0.6'></a>
+      <div class="collapse navbar-collapse navbar-right" id="navbarCollapse">
+      {% if current_user.is_anonymous %}
+       <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home </a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" id='login' href="{{url_for('login')}}">Login <span class="sr-only">(current)</span></a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" id='register' href="{{url_for('register')}}">Register </a>
+          </li>
+        </ul> 
+      {% else %}
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+              <a class="nav-link" id='dashboard' href="{{url_for('dashboard')}}">Dashboard</a>
+          </li>
+           <li class="nav-item">
+              <a class="nav-link" id='viewspaces' href="{{url_for('viewspaces')}}">Viewspaces</a>
+          </li>
+          <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ current_user.fullname }}</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown01">
+                <a class="dropdown-item" href="/notifications">Notifications {% if notificationcount is defined %}({{notificationcount}}){% endif %}</a>
+              <a class="dropdown-item" href="{{url_for('logout')}}">Logout</a>
+            </div>
+          </li>
+        </ul> 
+      {% endif %}
+      </div>
+    </div>
+    </nav>
+
+    <!-- Begin page content -->
+    {% block containercontent%}
+    {% endblock %}
+
+    <footer class="footer" style='background-color:transparent'>
+      <div class="container" >
+        <span style='color:white'>iPark &copy;</span>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    {% set jqueryloc = url_for('static',filename='assets/js/vendor/jquery.min.js') %}
+    <script>window.jQuery || document.write('<script src="{{jqueryloc}}"><\/script>')</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static',filename='dist/js/bootstrap.min.js')}}"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="{{ url_for('static',filename='assets/js/ie10-viewport-bug-workaround.js')}}"></script>
+  </body>
+</html>

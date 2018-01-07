@@ -1,0 +1,31 @@
+{% extends "starternew.html" %}
+
+{% block containercontent %}
+    <script> document.getElementById('viewspaces').className += " active";</script>
+    <!-- Custom styles for this template -->
+    <link href="static/exploreads.css" rel="stylesheet">
+    <!-- Begin page content -->
+    <!-- Marketing messaging and featurettes
+    ================================================== -->
+    <!-- Wrap the rest of the page in another container to center all the content. -->
+
+    <div class="container marketing">
+
+        <div style='text-align:center'><h1 style='color:white'>Notifications<h1></div>
+        <hr>
+        <div class='row'>
+            <div class="col-md-12">
+                <!-- Three columns of text below the carousel -->
+                {% for notification in notifications %}
+                <div class="row">
+                    <div class='col-lg-2'> </div>
+                    <div class="col-lg-8" style='background:grey; background: rgba(250,250,250,0.7)'>
+                        {{notification.id}} {{notification.message}} {{notification.ntime}}
+                    </div><!-- /.col-lg-4 -->
+                    <div class='col-lg-2'> </div>
+                </div><!-- /.row --><br>
+                {% endfor %}
+            </div>
+        </div>
+    </div><!-- /.container -->
+{% endblock %}

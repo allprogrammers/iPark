@@ -1,0 +1,91 @@
+{% extends "starternew.html" %}
+
+{% block containercontent %}
+    <script> document.getElementById('viewspaces').className += " active";</script>
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static',filename='exploreads.css')}}" rel="stylesheet">
+    <link href="{{ url_for('static',filename='signin.css')}}" rel="stylesheet">
+    <!-- Begin page content -->
+    <!-- Marketing messaging and featurettes
+    ================================================== -->
+    <!-- Wrap the rest of the page in another container to center all the content. -->
+
+    <div class="container marketing">
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <ul class='alert alert-danger'>
+                {% for message in messages %}
+                  <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+              {% endif %}
+            {% endwith %}
+
+        <div class='row'>
+            <div id='map' style='width: 100%;height:400px;background-color:grey'></div>
+            <script>
+                markers = [];
+            </script>
+            <script>
+                function directions(){
+                    slot = document.getElementById('slotno').value;
+                    pointer = slot-markers[0].no;
+                    loc= "https://www.google.com/maps/dir/?api=1&destination="+markers[pointer].pos.lat.toString()+","+markers[pointer].pos.lng.toString();
+                    window.location=loc;
+                    return false;
+                }
+                function book(){
+                    slot = document.getElementById('slotno').value;
+                    window.location="{{url_for('book')}}"+slot.toString();
+                    return false;
+                }
+                function initMap() {
+                  var map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 17,
+                    center: markers[1].pos
+                    });
+                  markers.forEach(function(item,index,array){
+                      var marker = new google.maps.Marker({
+                      position: item.pos,
+                      map: map,
+                      icon: item.icon,
+                      label: item.title
+                      });});
+                }
+            </script>
+            <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5Vtc0K0sW8rzUuGpTgBoVTEerFiQes-E&callback=initMap"></script>
+        </div>
+
+        <div class='row'>
+            <div class="col-md-12">
+                <!-- Three columns of text below the carousel -->
+                {% for parkings_row in parkings | batch(3,'&nbsp;') %}
+                    {% for parking in parkings_row if parking.id %}
+                            <script>
+                                var colorarray=['http://maps.google.com/mapfiles/ms/icons/red-dot.png','http://maps.google.com/mapfiles/ms/icons/yellow-dot.png','http://maps.google.com/mapfiles/ms/icons/green-dot.png','http://maps.google.com/mapfiles/ms/icons/blue-dot.png'];
+                                var markerloc = { no: {{parking.id}}, pos: { lat: {{parking.loclat}},lng: {{parking.loclong}} }, };
+                                markerloc.icon =  colorarray[{{parking.available}}]; 
+                                markerloc.title = "Slot " + "{{parking.id}}";
+                                markers.push(markerloc);
+                            </script>
+                    {% endfor %}
+                {% endfor %}
+
+                <form>
+                    <div class="row">
+                        <div class="col-md-6 " style='text-align:center'>
+                            <input type='text' class='form-control' placeholder='Slot Number' id='slotno' name='slotno'/>
+                        </div><!-- /.col-lg-4 -->
+                        <div class="col-md-3 " style='text-align:center'>
+                            <button class="btn btn-md btn-primary btn-block" style='color:white' onClick='return directions()'>Directions</button>
+                        </div><!-- /.col-lg-4 -->
+                        <div class="col-md-3" style='text-align:center'>
+                            <button class="btn btn-md btn-primary btn-block" style='color:white' onClick='return book()'>Book</button>
+                        </div><!-- /.col-lg-4 -->
+                    </div><!-- /.row -->
+                </form>
+            </div>
+        </div>
+
+    </div><!-- /.container -->
+{% endblock %}

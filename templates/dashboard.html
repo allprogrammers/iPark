@@ -1,0 +1,39 @@
+{% extends 'dashboardheader.html' %}
+
+{% block dashboardcontent %}
+<script>
+    function checkin(bookingid)
+    {
+        window.location="{{url_for('checkin')}}"+bookingid;
+        return false;
+    }
+</script>
+<main class="col-sm-12 col-md-10 offset-md-1 pt-3" style='color:black'>
+
+  <h2 style='color:white'>Bookings</h2>
+  <div class="table-responsive" style='background:#7f7f7f;background: rgba(255,255,255,0.5);' >
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Slot ID</th>
+          <th>Booking From</th>
+          <th>Booking To</th>
+          <th>Check-In</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for booking in bookings %}
+        <tr>
+            <td>{{booking.parkingid}}</td>
+            <td>{{booking.bookingfrom}}</td>
+            <td>{{booking.bookingto}}</td>
+            <td>{% if booking.checkin is not none %}Checked In{% else %}<button class='btn btn-md btn-primary btn-block' onClick="return checkin({{booking.id}})">Checkin</button>{% endif %}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</main>
+
+{% endblock %}
+
